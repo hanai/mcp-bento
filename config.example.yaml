@@ -1,0 +1,52 @@
+listen: localhost:3003
+mcpServers:
+  context7:
+    type: http
+    url: https://mcp.context7.com/mcp
+  time:
+    type: stdio
+    command: docker
+    args:
+      - run
+      - -i
+      - --rm
+      - mcp/time
+  github:
+    type: http
+    url: https://api.githubcopilot.com/mcp/
+    headers:
+      Authorization: "Bearer ${GITHUB_MCP_PAT}"
+profiles:
+  default:
+    context7:
+      tools:
+        - resolve-library-id
+    time:
+      prefix: false
+      tools:
+        - get_current_time
+    github-readonly-profile-with-prefix:
+      prefix: gh__
+      tools:
+        - github__list_commits
+    github-readonly-profile-wo-prefix:
+      prefix: false
+      tools:
+        - list_commits
+    github-readonly-profile-with-default-prefix:
+      tools:
+        - github__list_commits
+  github-readonly-profile-with-prefix:
+    github:
+      prefix: github__
+      tools:
+        - list_commits
+  github-readonly-profile-wo-prefix:
+    github:
+      prefix: false
+      tools:
+        - list_commits
+  github-readonly-profile-with-default-prefix:
+    github:
+      tools:
+        - list_commits

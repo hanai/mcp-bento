@@ -1,0 +1,49 @@
+{
+  "name": "mcp-bento",
+  "version": "1.0.4",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc && chmod +x dist/index.js",
+    "start": "node dist/index.js",
+    "dev": "tsx watch src/index.ts",
+    "clean": "rm -rf dist *.log",
+    "ts-check": "tsc --noEmit",
+    "test": "vitest run",
+    "lint": "eslint ./src --ext .ts,.tsx",
+    "format": "prettier --write \"src/**/*.{ts,tsx}\""
+  },
+  "bin": {
+    "mcp-bento": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.18.3",
+  "dependencies": {
+    "@hono/node-server": "^1.19.6",
+    "@modelcontextprotocol/sdk": "^1.20.2",
+    "commander": "^14.0.2",
+    "hono": "^4.10.4",
+    "lodash-es": "^4.17.21",
+    "pino": "^10.1.0",
+    "yaml": "^2.8.1",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@types/node": "^24.10.0",
+    "eslint": "^9.39.1",
+    "globals": "^16.5.0",
+    "prettier": "3.6.2",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.3",
+    "vitest": "^4.0.6"
+  }
+}
