@@ -1,6 +1,6 @@
 {
   "name": "mcp-bento",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -26,9 +26,9 @@
   "packageManager": "pnpm@10.18.3",
   "dependencies": {
     "@hono/node-server": "^1.19.6",
-    "@modelcontextprotocol/sdk": "^1.20.2",
+    "@modelcontextprotocol/sdk": "^1.21.1",
     "commander": "^14.0.2",
-    "hono": "^4.10.4",
+    "hono": "^4.10.5",
     "lodash-es": "^4.17.21",
     "pino": "^10.1.0",
     "yaml": "^2.8.1",
@@ -36,14 +36,14 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
-    "@types/node": "^24.10.0",
+    "@types/node": "^24.10.1",
     "eslint": "^9.39.1",
     "globals": "^16.5.0",
     "prettier": "3.6.2",
     "ts-node": "^10.9.2",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.46.3",
-    "vitest": "^4.0.6"
+    "typescript-eslint": "^8.46.4",
+    "vitest": "^4.0.8"
   }
 }

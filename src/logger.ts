@@ -14,7 +14,7 @@ const resolveLevel = (): Level => {
     return 'info'
 }
 
-const logFilePath = path.resolve(process.cwd(), 'bento.log')
+export const BENTO_LOG_PATH = path.resolve(process.cwd(), 'bento.log')
 
 export const logger = pino({
     level: resolveLevel(),
@@ -28,7 +28,7 @@ export const logger = pino({
             {
                 target: 'pino/file',
                 options: {
-                    destination: logFilePath,
+                    destination: BENTO_LOG_PATH,
                     mkdir: true,
                 },
             },

@@ -11,6 +11,26 @@ mcpServers:
       - -i
       - --rm
       - mcp/time
+  serena:
+    type: stdio
+    command: docker
+    args:
+      - run
+      - -i
+      - --rm
+      - --network
+      - host
+      - -p
+      - ${SERENA_DASHBOARD_PORT}:${SERENA_DASHBOARD_PORT}
+      - --env
+      - SERENA_DASHBOARD_PORT=${SERENA_DASHBOARD_PORT}
+      - -v
+      - ${SERENA_WORKING_DIR}:${SERENA_WORKING_DIR}
+      - -v
+      - serena_home:/workspace/serena
+      - ghcr.io/oraios/serena:latest
+      - serena
+      - start-mcp-server
   github:
     type: http
     url: https://api.githubcopilot.com/mcp/
@@ -18,6 +38,7 @@ mcpServers:
       Authorization: "Bearer ${GITHUB_MCP_PAT}"
 profiles:
   default:
+    serena: {}
     context7:
       tools:
         - resolve-library-id
