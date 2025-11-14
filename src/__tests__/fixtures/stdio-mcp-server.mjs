@@ -111,11 +111,11 @@ const shutdown = async (signal) => {
         console.error('Failed to close MCP server', error)
     }
     try {
-        await transport.close?.()
+        await transport.close()
     } catch (error) {
         console.error('Failed to close transport', error)
     }
-    console.error(`STDIO fixture shutting down due to ${signal}`)
+    console.error(`SHUTDOWN ${signal}`)
     process.exit(0)
 }
 

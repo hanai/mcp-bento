@@ -20,7 +20,7 @@ import {
   extractMessageArgument,
 } from './mcp-fixture-utils.mjs'
 
-const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined })
+const transport = new StreamableHTTPServerTransport({})
 const server = new BaseServer(
     { name: 'fixture-http', version: '1.0.0' },
     { capabilities: { tools: {}, prompts: {} } }
@@ -122,14 +122,14 @@ const shutdown = async (signal) => {
         console.error('Failed to close MCP server', error)
     }
     try {
-        await transport.close?.()
+        await transport.close()
     } catch (error) {
         console.error('Failed to close transport', error)
     }
     await new Promise((resolve) => {
         httpServer.close(() => resolve())
     })
-    console.log(`SHUTDOWN ${signal}`)
+    console.error(`SHUTDOWN ${signal}`)
     process.exit(0)
 }
 

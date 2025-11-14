@@ -17,6 +17,9 @@ const httpFixturePath = path.join(fixturesDir, 'http-mcp-server.mjs')
 const stdioFixturePath = path.join(fixturesDir, 'stdio-mcp-server.mjs')
 const configTemplatePath = path.join(fixturesDir, 'config.integration.json')
 const tsxBin = path.join(repoRoot, 'node_modules', 'tsx', 'dist', 'cli.mjs')
+const CLIENT_CONNECTION_TIMEOUT_MS = 20000
+const CLIENT_RETRY_DELAY_MS = 250
+const PROCESS_TERMINATION_TIMEOUT_MS = 5000
 
 interface SpawnedFixture {
     child: ChildProcessWithoutNullStreams
@@ -25,6 +28,7 @@ interface SpawnedFixture {
 
 let httpFixture: SpawnedFixture | null = null
 let activeGateway: ChildProcessWithoutNullStreams | null = null
+const tempConfigDirectories: string[] = []
 
 beforeAll(async () => {
     httpFixture = await startHttpFixture()
@@ -42,6 +46,7 @@ afterEach(async () => {
         await terminateProcess(activeGateway, 'SIGINT')
         activeGateway = null
     }
+    await cleanupTempConfigDirectories()
 })
 
 describe('mcp-bento integration', () => {
@@ -177,7 +182,22 @@ const copyIntegrationConfig = async (): Promise<string> => {
     const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'mcp-bento-'))
     const destination = path.join(tempDir, 'config.integration.json')
     await fs.copyFile(configTemplatePath, destination)
+    tempConfigDirectories.push(tempDir)
     return destination
+}
+
+const cleanupTempConfigDirectories = async () => {
+    while (tempConfigDirectories.length > 0) {
+        const dir = tempConfigDirectories.pop()
+        if (!dir) {
+            continue
+        }
+        try {
+            await fs.rm(dir, { recursive: true, force: true })
+        } catch (error) {
+            console.warn('Failed to remove temporary config directory', dir, error)
+        }
+    }
 }
 
 const getAvailablePort = async (): Promise<number> => {
@@ -200,7 +220,10 @@ const getAvailablePort = async (): Promise<number> => {
     })
 }
 
-const connectClientWithRetry = async (baseUrl: URL, timeoutMs = 20000) => {
+const connectClientWithRetry = async (
+    baseUrl: URL,
+    timeoutMs = CLIENT_CONNECTION_TIMEOUT_MS
+) => {
     const deadline = Date.now() + timeoutMs
     let lastError: unknown
     while (Date.now() < deadline) {
@@ -212,7 +235,7 @@ const connectClientWithRetry = async (baseUrl: URL, timeoutMs = 20000) => {
         } catch (error) {
             lastError = error
             await client.close().catch(() => {})
-            await new Promise((resolve) => setTimeout(resolve, 250))
+            await new Promise((resolve) => setTimeout(resolve, CLIENT_RETRY_DELAY_MS))
         }
     }
     const message = lastError instanceof Error ? lastError.message : String(lastError)
@@ -230,7 +253,10 @@ const terminateProcess = async (
     await Promise.race([
         once(child, 'exit'),
         new Promise((_, reject) =>
-            setTimeout(() => reject(new Error('Process termination timeout')), 5000)
+            setTimeout(
+                () => reject(new Error('Process termination timeout')),
+                PROCESS_TERMINATION_TIMEOUT_MS
+            )
         ),
     ])
 }
