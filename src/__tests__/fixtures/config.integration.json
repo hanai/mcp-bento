@@ -1,0 +1,24 @@
+{
+    "listen": "127.0.0.1:${BENTO_PORT}",
+    "mcpServers": {
+        "fixtureHttp": {
+            "type": "http",
+            "url": "http://127.0.0.1:${FIXTURE_HTTP_PORT}/mcp"
+        },
+        "fixtureStdio": {
+            "type": "stdio",
+            "command": "node",
+            "args": ["${STDIO_SERVER_PATH}"]
+        }
+    },
+    "profiles": {
+        "default": {
+            "fixtureHttp": {
+                "prefix": false
+            },
+            "fixtureStdio": {
+                "prefix": false
+            }
+        }
+    }
+}
