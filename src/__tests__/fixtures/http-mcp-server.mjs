@@ -122,7 +122,7 @@ const shutdown = async (signal) => {
     await new Promise((resolve) => {
         httpServer.close(() => resolve())
     })
-    console.log(`SHUTDOWN ${signal}`)
+    console.error(`SHUTDOWN ${signal}`)
     process.exit(0)
 }
 
