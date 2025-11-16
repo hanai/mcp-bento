@@ -1,4 +1,5 @@
 {
+    "$schema": "https://raw.githubusercontent.com/hanai/mcp-bento/refs/heads/main/bento.schema.json",
     "listen": "localhost:3003",
     "mcpServers": {
         "context7": {
