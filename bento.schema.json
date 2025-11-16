@@ -1,10 +1,18 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "mcp-bento configuration",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/hanai/mcp-bento/refs/heads/main/bento.schema.json",
+  "title": "Config",
+  "description": "json config file for mcp-bento",
   "type": "object",
-  "required": ["listen", "mcpServers", "profiles"],
+  "required": [
+    "listen",
+    "mcpServers",
+    "profiles"
+  ],
   "properties": {
-    "$schema": { "type": "string" },
+    "$schema": {
+      "type": "string"
+    },
     "listen": {
       "type": "string",
       "pattern": "^[\\w.-]+:\\d+$"
@@ -16,30 +24,52 @@
         "oneOf": [
           {
             "type": "object",
-            "required": ["type", "url"],
+            "required": [
+              "type",
+              "url"
+            ],
             "properties": {
-              "type": { "const": "http" },
-              "url": { "type": "string", "format": "uri" },
+              "type": {
+                "const": "http"
+              },
+              "url": {
+                "type": "string",
+                "format": "uri"
+              },
               "headers": {
                 "type": "object",
-                "additionalProperties": { "type": "string" }
+                "additionalProperties": {
+                  "type": "string"
+                }
               }
             },
             "additionalProperties": false
           },
           {
             "type": "object",
-            "required": ["type", "command"],
+            "required": [
+              "type",
+              "command"
+            ],
             "properties": {
-              "type": { "const": "stdio" },
-              "command": { "type": "string", "minLength": 1 },
+              "type": {
+                "const": "stdio"
+              },
+              "command": {
+                "type": "string",
+                "minLength": 1
+              },
               "args": {
                 "type": "array",
-                "items": { "type": "string" }
+                "items": {
+                  "type": "string"
+                }
               },
               "env": {
                 "type": "object",
-                "additionalProperties": { "type": "string" }
+                "additionalProperties": {
+                  "type": "string"
+                }
               }
             },
             "additionalProperties": false
@@ -57,16 +87,27 @@
           "properties": {
             "tools": {
               "type": "array",
-              "items": { "type": "string" }
+              "items": {
+                "type": "string"
+              }
             },
             "prompts": {
               "type": "array",
-              "items": { "type": "string" }
+              "items": {
+                "type": "string"
+              }
             },
             "prefix": {
               "oneOf": [
-                { "type": "string" },
-                { "type": "boolean", "enum": [false] }
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "boolean",
+                  "enum": [
+                    false
+                  ]
+                }
               ]
             }
           },
